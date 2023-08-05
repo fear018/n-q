@@ -1,4 +1,4 @@
-const prisma = require("../services/db-client");
+const prisma = require("../db-client");
 
 exports.createUser = async (name, email, hash) => {
   return await prisma.user.create({
