@@ -1,6 +1,6 @@
 module.exports = (schema) => {
   if (!schema) {
-    throw new Error("Validation scheme is required!");
+    throw new Error("GATEWAY Validation scheme is required!");
   }
 
   return (req, res, next) => {
@@ -8,7 +8,7 @@ module.exports = (schema) => {
 
     if (error) {
       console.log("❌", error.details[0].message);
-      return next(new Error(error.details[0].message));
+      return next(new Error(`GATEWAY ${error.details[0].message}`));
     }
 
     next();

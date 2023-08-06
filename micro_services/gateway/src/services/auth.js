@@ -27,14 +27,14 @@ exports.checkAuth = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    throw new Error("Unauthorized. Token is required.");
+    throw new Error("GATEWAY Unauthorized. Token is required.");
   }
 
   const [_, token] = authorization.split(" "); // Bearer <token>
 
   verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
-      next(new Error(`Unauthorized: ${err.message}`));
+      next(new Error(`GATEWAY Unauthorized: ${err.message}`));
     } else {
       req.userTokenData = decoded;
       next();

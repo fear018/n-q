@@ -1,0 +1,45 @@
+version: "3.8"
+
+volumes:
+  storage_data: {}
+
+services:
+  # postgres:
+  #   image: postgres:15.3-alpine3.18
+  #   container_name: postgres
+  #   volumes:
+  #     - ./data:/var/lib/postgresql/data
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     POSGRES_HOST: 127.0.0.1
+  #     POSGRES_PORT: 5432
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: postgres_db
+
+  database:
+    image: postgres:15.3-alpine3.18
+    container_name: database
+    restart: unless-stopped
+    env_file:
+      - ./storage/.env
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  storage:
+    build:
+      context: ./storage
+      dockerfile: Dockerfile.local
+    depends_on:
+      - database
+    volumes:
+      - ./storage:/storage/
+    env_file:
+      - ./storage/.env
+    environment:
+      - PORT=4000
+    ports:
+      - 4000:4000

@@ -23,7 +23,7 @@ exports.loginUser = async (req, res) => {
   const hash = createHash(password);
 
   if (user.hash !== hash) {
-    throw new Error("Invalid password");
+    throw new Error("GATEWAY Invalid password");
   }
 
   const access = await createJwtTokenAsync({
