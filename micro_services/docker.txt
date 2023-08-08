@@ -9,6 +9,8 @@ docker compose down        - stop container & delete volumes
 docker logs [container id] - containers logs
 docker system prune -a     - delete all docker images with cash
 docker volume prune -f     - delete all docker volumes with cash
+docker network ls          - dockers networks
 
 docker compose down && docker compose up --build -d
 
+npm init -y && npm i types LTS
