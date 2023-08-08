@@ -1,0 +1,11 @@
+FROM node:18.3-alpine
+
+WORKDIR /storage
+COPY package*.json /storage
+RUN npm ci
+
+COPY . .
+
+RUN npm run prisma:g
+
+CMD [ "npm", "run", "dev" ]
