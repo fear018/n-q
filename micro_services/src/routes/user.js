@@ -4,8 +4,8 @@ const asyncErrorHandler = require("../utils/asyncErrorHandler");
 
 const { createUserSchema, loginUserSchema } = require("../schemas/user");
 
-const { checkAuth } = require("../services/auth");
-const validation = require("../services/validation");
+const { checkAuth } = require("../helpers/auth");
+const validation = require("../helpers/validation");
 
 const { createUser, loginUser, getAllUsers } = require("../controllers/user");
 
@@ -15,6 +15,7 @@ router.post(
   validation(loginUserSchema),
   asyncErrorHandler(loginUser)
 );
-router.get("/all", checkAuth, asyncErrorHandler(getAllUsers));
+// router.get("/all", checkAuth, asyncErrorHandler(getAllUsers));
+router.get("/all", asyncErrorHandler(getAllUsers));
 
 module.exports = router;

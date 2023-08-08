@@ -2,9 +2,9 @@ const {
   createUser,
   getUserByEmail,
   getAllUsers,
-} = require("../services/data-client");
+} = require("../helpers/data-client");
 
-const { createHash, createJwtTokenAsync } = require("../services/auth");
+const { createHash, createJwtTokenAsync } = require("../helpers/auth");
 
 exports.createUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -35,6 +35,7 @@ exports.loginUser = async (req, res) => {
 };
 
 exports.getAllUsers = async (req, res) => {
+  console.log("GATEWAY getAllUsers");
   const users = await getAllUsers();
 
   res.send(users);
