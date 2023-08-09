@@ -1,0 +1,72 @@
+version: "3.8"
+
+volumes:
+  storage_data: {}
+
+services:
+  database:
+    image: postgres:15.3-alpine3.18
+    container_name: database
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  storage:
+    build:
+      context: ./src/services/storage
+      dockerfile: Dockerfile.local
+    container_name: storage
+    depends_on:
+      - database
+    volumes:
+      - ./src/services/storage:/app
+    env_file:
+      - .env
+    ports:
+      - 4000:4000
+
+  message_broker:
+    image: rabbitmq:3.12.2-management-alpine
+    container_name: message_broker
+    restart: unless-stopped
+    volumes:
+      - .:/var/lib/rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  gateway:
+    build:
+      context: ./
+      dockerfile: Dockerfile.local
+    container_name: gateway
+    depends_on:
+      - storage
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
+    ports:
+      - 3001:3001
+
+  # nginx:
+  #   image: nginx:1.25.1-alpine
+  #   container_name: nginx
+  #   restart: unless-stopped
+  #   ports:
+  #     - 3000:80
+  #   volumes:
+  #     - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+  #   depends_on:
+  #     - gateway
+
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: redis
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - nginx

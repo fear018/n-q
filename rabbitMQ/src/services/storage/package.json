@@ -1,0 +1,24 @@
+{
+  "name": "storage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "db-client.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "prisma:m": "npx prisma migrate dev --name init",
+    "prisma:g": "npx prisma generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.1.1",
+    "@types/node": "^20.4.8",
+    "koa": "^2.14.2",
+    "koa-bodyparser": "^4.4.1",
+    "koa-router": "^12.0.0",
+    "nodemon": "^3.0.1",
+    "prisma": "^5.1.1"
+  }
+}
