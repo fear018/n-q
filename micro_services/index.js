@@ -2,10 +2,9 @@ require("dotenv").config();
 const express = require("express");
 
 const userRouter = require("./src/routes/user");
-
 const errorHandler = require("./src/utils/errorHandler");
-
 const getCacheClient = require("./src/services/redis");
+const logger = require("./src/utils/logger");
 
 const app = express();
 
@@ -28,5 +27,5 @@ app.use("/user", userRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`🚀 GATEWAY PORT: ${PORT}`);
+  logger.info(`🚀 GATEWAY PORT: ${PORT}`);
 });
