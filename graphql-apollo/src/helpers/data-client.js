@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 exports.createUser = async (name, email, hash) => {
-  const { data } = await axios.post(`${process.env.PRISMA_ENDPOINT}/user`, {
+  const { data } = await axios.post(`${process.env.STORAGE_URL}/user`, {
     name,
     email,
     hash,
@@ -11,20 +11,17 @@ exports.createUser = async (name, email, hash) => {
 };
 
 exports.getUserByEmail = async (email) => {
-  const { data } = await axios.post(
-    `${process.env.PRISMA_ENDPOINT}/userByEmail`,
-    {
-      email,
-    }
-  );
+  const { data } = await axios.post(`${process.env.STORAGE_URL}/userByEmail`, {
+    email,
+  });
 
   return data;
 };
 
 exports.getAllUsers = async () => {
-  console.log("PRISMA_ENDPOINT getAllUsers");
-  console.log(`${process.env.PRISMA_ENDPOINT}/users`);
-  const { data } = await axios.get(`${process.env.PRISMA_ENDPOINT}/users`);
+  console.log("STORAGE_URL getAllUsers");
+  console.log(`${process.env.STORAGE_URL}/users`);
+  const { data } = await axios.get(`${process.env.STORAGE_URL}/users`);
 
   return data;
 };

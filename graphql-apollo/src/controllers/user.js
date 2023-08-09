@@ -6,17 +6,17 @@ const {
 
 const { createHash, createJwtTokenAsync } = require("../helpers/auth");
 
-exports.createUser = async (req, res) => {
-  const { name, email, password } = req.body;
+exports.createUser = async (_, args, ctx) => {
+  const { name, email, password } = args;
   const hash = createHash(password);
 
   const user = await createUser(name, email, hash);
 
-  res.send(user);
+  return user;
 };
 
-exports.loginUser = async (req, res) => {
-  const { email, password } = req.body;
+exports.loginUser = async (_, args, ctx) => {
+  const { email, password } = args;
 
   const user = await getUserByEmail(email);
 
@@ -31,12 +31,11 @@ exports.loginUser = async (req, res) => {
     email,
   });
 
-  res.send({ access: `Bearer ${access}` });
+  return { access: `Bearer ${access}` };
 };
 
-exports.getAllUsers = async (req, res) => {
-  console.log("GATEWAY getAllUsers");
+exports.getAllUsers = async () => {
   const users = await getAllUsers();
 
-  res.send(users);
+  return users;
 };

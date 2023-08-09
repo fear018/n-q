@@ -14,3 +14,5 @@ docker network ls          - dockers networks
 docker compose down && docker compose up --build -d
 
 npm init -y && npm i types LTS
+
+npm install @apollo/server express graphql cors body-parser http graphql-tag

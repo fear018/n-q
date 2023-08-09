@@ -1,20 +1,45 @@
-require("dotenv").config();
+const { ApolloServer } = require("@apollo/server");
+const { expressMiddleware } = require("@apollo/server/express4");
+const {
+  ApolloServerPluginDrainHttpServer,
+} = require("@apollo/server/plugin/drainHttpServer");
 const express = require("express");
+const http = require("http");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
-const userRouter = require("./src/routes/user");
-
-const errorHandler = require("./src/utils/errorHandler");
+const schema = require("./src/gql/schema");
 
 const app = express();
+const httpServer = http.createServer(app);
 
-const PORT = parseInt(process.env.PORT) || 3000;
+const startApolloServer = async () => {
+  const server = new ApolloServer({
+    schema,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    formatError: (err) => {
+      console.log(err);
+      return err;
+    },
+    context: async ({ req, res }) => {
+      // auth, context, etc
+    },
+  });
 
-app.use(express.json()); // for parsing application/json
+  await server.start();
 
-app.use("/user", userRouter);
+  app.use(
+    "/",
+    cors(),
+    bodyParser.json(),
+    expressMiddleware(server, {
+      context: async ({ req }) => ({ token: req.headers.token }),
+    })
+  );
 
-app.use(errorHandler);
+  await new Promise((resolve) => httpServer.listen({ port: 3000 }, resolve));
 
-app.listen(PORT, () => {
-  console.log(`🚀 GATEWAY PORT: ${PORT}`);
-});
+  console.log(`🚀 Server ready at http://localhost:3000/`);
+};
+
+startApolloServer();
